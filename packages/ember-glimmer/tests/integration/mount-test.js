@@ -171,4 +171,18 @@ moduleFor('{{mount}} test', class extends ApplicationTest {
       this.assertComponentElement(this.firstChild, { content: '<!---->' });
     });
   }
+
+  ['@test it asserts when an invalid engine name is provided']() {
+    this.router.map(function() {
+      this.route('invalid-engine-name');
+    });
+    this.registerController('invalid-engine-name', Controller.extend({
+      engineName: {}
+    }));
+    this.registerTemplate('invalid-engine-name', '{{mount engineName}}');
+
+    expectAssertion(() => {
+      this.visit('/invalid-engine-name');
+    }, "Invalid engine name '[object Object]' specified, engine name must be either a string, null or undefined.");
+  }
 });

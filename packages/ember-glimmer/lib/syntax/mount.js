@@ -86,6 +86,11 @@ class DynamicEngineReference {
 
       return this._lastDef;
     } else {
+      assert(
+        `Invalid engine name '${nameOrDef}' specified, engine name must be either a string, null or undefined.`,
+        nameOrDef === null || nameOrDef === undefined
+      );
+      
       return null;
     }
   }
