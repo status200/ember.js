@@ -17,6 +17,12 @@ moduleFor('{{mount}} assertions', class extends RenderingTest {
     }, /You can only pass a single argument to the {{mount}} helper, e.g. {{mount "chat-engine"}}./i);
   }
 
+  ['@test it asserts when an invalid engine name is provided']() {
+    expectAssertion(() => {
+      this.render('{{mount engineName}}', { engineName: {} });
+    }, /Invalid engine name '\[object Object\]' specified, engine name must be either a string, null or undefined./i);
+  }
+
   ['@test it asserts that the specified engine is registered']() {
     expectAssertion(() => {
       this.render('{{mount "chat"}}');
@@ -112,8 +118,6 @@ moduleFor('{{mount}} test', class extends ApplicationTest {
     }
   }
 
-
-
   ['@test it renders with a bound engine name']() {
     this.router.map(function() {
       this.route('bound-engine-name');
@@ -172,17 +176,4 @@ moduleFor('{{mount}} test', class extends ApplicationTest {
     });
   }
 
-  ['@test it asserts when an invalid engine name is provided']() {
-    this.router.map(function() {
-      this.route('invalid-engine-name');
-    });
-    this.registerController('invalid-engine-name', Controller.extend({
-      engineName: {}
-    }));
-    this.registerTemplate('invalid-engine-name', '{{mount engineName}}');
-
-    expectAssertion(() => {
-      this.visit('/invalid-engine-name');
-    }, "Invalid engine name '[object Object]' specified, engine name must be either a string, null or undefined.");
-  }
 });
